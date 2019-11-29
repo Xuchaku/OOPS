@@ -1,10 +1,50 @@
 body{
 	padding:0;
 	margin:0;
+	background: #222930;
+	color:#E9E9E9;
+}
+input{
+	border: none;
+	font-family: 'Press Start 2P', cursive;
+	border-bottom: 2px solid #E9E9E9; 
+	background: #2c3640;
+	transition: 0.3;
+	cursor: pointer;
+	color: #E9E9E9;
+}
+input:focus{
+	border-bottom: 3px solid #4EB1BA;
+	color: #4EB1BA;
+}
+.admin-panel button{
+	height: 50px;
+	margin-bottom: 10px;
+}
+.add, .title{
+	border: 1px solid white;
+	height: auto;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+p{
+	margin:0;
+	padding: 0;
+	text-align: center;
+	font-size: 26px;
+	font-family: 'Yeseva One', cursive;
+}
+button{
+	border-radius:3px;
+	background: #4EB1BA;
+	font-family: 'Yeseva One';
+	font-size: 20px;
+	border: none;
+	color:white;
+	cursor: pointer;;
 }
 div{
-	border: 1px solid black;
-	border-radius: 4px;
+	
 }
 .wrapper{
 	padding: 10px;
@@ -16,6 +56,7 @@ div{
 	display: flex;
 	flex-direction: row;
 	flex-wrap:wrap;
+
 }
 .admin-panel, .content{
 	margin-right:20px;
@@ -30,16 +71,17 @@ div{
 .content{
 	width: 600px;
 
+
 }
  input{
 	display: block;
 	
 	width: 100%;
 	height: 30px;
-	border: 1px solid black;
+	
 	margin: 0 auto;
 	padding: 5px;
-	border-radius: 4px;
+	
 	margin-bottom: 10px;
 }
 button{
@@ -70,11 +112,28 @@ button{
 }
 .search button{
 	width: 60px;
-	padding: 10px;
+	padding: 0px;
+	background: none;
+	border-radius: 0;
+	border: 2px solid #E9E9E9;
+	transition: 0.3s;
 	margin: 0;
 }
+.search button:hover{
+	background: #E9E9E9;
+}
+.search input:nth-child(4){
+	margin-right: 20px;
+}
 .search .thrSt{
-	margin:0;
+	margin:10px 0;
+}
+.info{
+	margin: 0;
+	padding: 0;
+}
+.info > ul > li {
+	border-left: 2px solid #E9E9E9;
 }
 ul{
 	list-style: none;
@@ -82,8 +141,14 @@ ul{
 	padding: 0;
 }
 li{
-	margin: 10px;
+	margin: 10px 0;
+	padding: 5px 10px;
+	transition: 0.3s;
 }
+li:hover{
+
+}
+
 .hide{
 	display:none;
 }
