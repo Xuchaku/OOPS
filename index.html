@@ -28,7 +28,7 @@
 			<input class="thrSt" placeholder="Месяц" type="text" name="month">
 			<input class="thrSt" placeholder="День" type="text" name="day">
 			<button id="addviol">&#10010;</button>
-			<button>Добавить</button>
+			<button id="newviol">Добавить</button>
 		</div>
 	</div>
 	<div class="content">
@@ -36,8 +36,8 @@
 			<input class="srch" type="text" placeholder="Поиск по номеру..." name="srch">
 			<button>🔎</button>
 		</div>
-		<div class="info">
-			<ul class="head">
+		<div id="lstindex" class="info">
+			<!-- <ul class="head">
 				<li class="top">FJ423F
 					<span>&#10006;</span>
 					<span>&#10000;</span>
@@ -59,7 +59,7 @@
 						</li>
 					</ul>
 				</li>
-			</ul>
+			</ul> -->
 		</div>
 	</div>
 	<div class="content2">
@@ -105,8 +105,99 @@
 
 
 <script>
+
 let randData = (min, max)=>{
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+let isValidData = (parent)=>{
+	let isVal = 0;
+	let inputN = 0;
+	for(let i =0;i<parent.children.length;i++){
+		if(parent.children[i].tagName == "INPUT"){
+			inputN++;
+		}
+	}
+	for(let i =0;i<parent.children.length;i++){
+		if(parent.children[i].tagName == "INPUT"){
+			switch(parent.children[i].getAttribute("placeholder")){
+				case "Имя": parent.children[i].value == "" ? isVal = 0 : isVal++;break;
+				case "Фамилия": parent.children[i].value == "" ? isVal = 0 : isVal++;break;
+				case "Возраст":{
+					(parent.children[i].value == "" || isNaN(parent.children[i].value)) ? isVal = 0 : isVal++;
+				};break;
+				case "Город":parent.children[i].value == "" ? isVal = 0 : isVal++;break;
+				case "Номер":parent.children[i].value.length != 6 ? isVal = 0 : isVal++;break;
+				case "Марка":parent.children[i].value == "" ?  isVal = 0 : isVal++;break;
+				case "Нарушение":parent.children[i].value == "" ? isVal = 0 : isVal++;break;
+				case "Год":(parent.children[i].value == "" || isNaN(parent.children[i].value)) ? isVal = 0 : isVal++;break;
+				case "Месяц":(parent.children[i].value == "" || isNaN(parent.children[i].value) || (+parent.children[i].value <= 0 ||  +parent.children[i].value > 12)) ? isVal = 0 : isVal++;break;
+				case "День":(parent.children[i].value == "" || isNaN(parent.children[i].value) || (+parent.children[i].value <= 0 ||  +parent.children[i].value > 31)) ? isVal = 0 : isVal++;break;
+
+				default:break;
+			}
+		}
+	}
+	return (isVal == inputN) ? 1: 0;
+}
+class App{
+	box = document.getElementById("lstindex");
+	constructor(){
+		this.violatorArr = [];
+	}
+	add(obj){
+		this.violatorArr.push(obj);
+	}
+	showall(){
+		/*
+			<ul class="head">
+				<li class="top">FJ423F
+					<span>&#10006;</span>
+					<span>&#10000;</span>
+					<ul class="hide">
+						<li>Name</li>
+						<li>Suname</li>
+						<li>Age</li>
+						<li>City</li>
+						<li>Car</li>
+						<li class="top">Viol
+							<ul class="hide">
+								<li>llalalal</li>
+								<li>llalalal</li>
+								<li>llalalal</li>
+								<li>llalalal</li>
+								<li>llalalal</li>
+								<li>llalalal</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		*/
+		let ulTop, ulMiddle, ulBot, span, liHead, txt;
+		console.log(this.violatorArr[0]["car"]["ind"]);
+		for(let i = 0;i<this.violatorArr.length;i++){
+
+			ulTop = document.createElement("ul");
+			ulTop.setAttribute("class", "head");
+			liHead = document.createElement("li");
+			liHead.setAttribute("class", "top");
+			liHead.innerHTML = this.violatorArr[i]["car"]["ind"];
+			span = document.createElement("span");
+			span.innerHTML = "&#10006;";
+			liHead.append(span);
+			span = document.createElement("span");
+			span.innerHTML = "&#10000;";
+			liHead.append(span);
+			ulTop.append(liHead);
+			this.box.append(ulTop);
+		}
+	}
+	showforindex(){
+
+	}
+	showforperiod(){
+
+	}
 }
 
 class Human{
@@ -146,7 +237,38 @@ class Violator extends Human{
   	}
 }
 
-let v = new Violator("Vasya", "Bolotov" ,23, "GreyHound", "14A7B", "BMV");
+//let v = new Violator("Vasya", "Bolotov" ,23, "GreyHound", "14A7B", "BMV");
+let app = new App();
+document.getElementById("newviol").onclick = (e)=>{
+	let target = e.target;
+	let data = {};
+	if(isValidData(target.parentElement)){
+		target = target.parentElement;
+		data["name"] = target.children[0].value;
+		data["surname"] = target.children[1].value;
+		data["age"] = +target.children[2].value;
+		data["city"] = target.children[3].value;
+		data["index"] = target.children[4].value;
+		data["car"] = target.children[5].value;
+		data["viol"] = [];
+		for(let i=6;i<target.children.length-4;i+=4){
+			data["viol"].push({
+				"violstr": target.children[i].value,
+				"year": +target.children[i+1].value,
+				"month": +target.children[i+2].value,
+				"day": +target.children[i+3].value
+			});
+		}
+		let objViol = new Violator(data["name"], data["surname"], data["age"], data["city"], data["index"], data["car"]);
+		let arrViol = data["viol"]; 
+		for(let i =0;i<arrViol.length;i++){
+			objViol.addViol(arrViol[i]["violstr"], arrViol[i]["year"],arrViol[i]["month"],arrViol[i]["day"]);
+		}
+		app.add(objViol);
+
+		app.showall();
+	}
+}
 
 let viol = 1;
 document.getElementById("addviol").onclick = (e)=>{
