@@ -21,7 +21,6 @@
 			<input class="oneSt" placeholder="Город" type="text" name="city">
 
 			<input class="twoSt" placeholder="Номер" type="text" name="index">
-			<input class="twoSt" placeholder="Марка" type="text" name="car">
 
 			<input type="text" placeholder="Нарушение" name="violstr">
 			<input class="thrSt" placeholder="Год" type="text" name="year">
@@ -90,7 +89,6 @@
 				<input class="oneSt" placeholder="Город" type="text" name="city">
 
 				<input class="twoSt" placeholder="Номер" type="text" name="index">
-				<input class="twoSt" placeholder="Марка" type="text" name="car">
 
 				<input type="text" placeholder="Нарушение" name="violstr">
 				<input class="thrSt" placeholder="Год" type="text" name="year">
@@ -127,7 +125,7 @@ let isValidData = (parent)=>{
 				};break;
 				case "Город":parent.children[i].value == "" ? isVal = 0 : isVal++;break;
 				case "Номер":parent.children[i].value.length != 6 ? isVal = 0 : isVal++;break;
-				case "Марка":parent.children[i].value == "" ?  isVal = 0 : isVal++;break;
+				//case "Марка":parent.children[i].value == "" ?  isVal = 0 : isVal++;break;
 				case "Нарушение":parent.children[i].value == "" ? isVal = 0 : isVal++;break;
 				case "Год":(parent.children[i].value == "" || isNaN(parent.children[i].value)) ? isVal = 0 : isVal++;break;
 				case "Месяц":(parent.children[i].value == "" || isNaN(parent.children[i].value) || (+parent.children[i].value <= 0 ||  +parent.children[i].value > 12)) ? isVal = 0 : isVal++;break;
@@ -147,49 +145,22 @@ class App{
 	add(obj){
 		this.violatorArr.push(obj);
 	}
+	clear(){
+		this.box.innerHTML = "";
+	}
 	showall(){
 		/*
-			<ul class="head">
-				<li class="top">FJ423F
-					<span>&#10006;</span>
-					<span>&#10000;</span>
-					<ul class="hide">
-						<li>Name</li>
-						<li>Suname</li>
-						<li>Age</li>
-						<li>City</li>
-						<li>Car</li>
-						<li class="top">Viol
-							<ul class="hide">
-								<li>llalalal</li>
-								<li>llalalal</li>
-								<li>llalalal</li>
-								<li>llalalal</li>
-								<li>llalalal</li>
-								<li>llalalal</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-			</ul>
+			<ul class="head"><li class="top">FJ423F<span>&#10006;</span><span>&#10000;</span><ul class="hide"><li>Name</li><li>Suname</li><li>Age</li><li>City</li><li>Car</li><li class="top">Viol<ul class="hide"><li>llalalal</li><li>llalalal</li><li>llalalal</li><li>llalalal</li><li>llalalal</li><li>llalalal</li></ul></li></ul></li></ul>
 		*/
-		let ulTop, ulMiddle, ulBot, span, liHead, txt;
+		let ulViol;
 		console.log(this.violatorArr[0]["car"]["ind"]);
 		for(let i = 0;i<this.violatorArr.length;i++){
+			this.box.innerHTML += '<ul class="head"><li class="top">'+this.violatorArr[i]["car"]["ind"]+'<span>&#10006;</span><span>&#10000;</span><ul class="hide"><li>'+this.violatorArr[i]["name"]+'</li><li>'+this.violatorArr[i]["surname"]+'</li><li>'+this.violatorArr[i]["age"]+'</li><li>'+this.violatorArr[i]["city"]+'</li><li>Последний техосмотр: '+ this.violatorArr[i]["car"]["lastModif"]+'</li><li class="top">Нарушения<ul class="hide"></ul></li></ul></li></ul>';
+			
 
-			ulTop = document.createElement("ul");
-			ulTop.setAttribute("class", "head");
-			liHead = document.createElement("li");
-			liHead.setAttribute("class", "top");
-			liHead.innerHTML = this.violatorArr[i]["car"]["ind"];
-			span = document.createElement("span");
-			span.innerHTML = "&#10006;";
-			liHead.append(span);
-			span = document.createElement("span");
-			span.innerHTML = "&#10000;";
-			liHead.append(span);
-			ulTop.append(liHead);
-			this.box.append(ulTop);
+			for(let j =0;j<this.violatorArr[j]["violList"].length;j++){
+				
+			}
 		}
 	}
 	showforindex(){
@@ -265,7 +236,7 @@ document.getElementById("newviol").onclick = (e)=>{
 			objViol.addViol(arrViol[i]["violstr"], arrViol[i]["year"],arrViol[i]["month"],arrViol[i]["day"]);
 		}
 		app.add(objViol);
-
+		app.clear();
 		app.showall();
 	}
 }
